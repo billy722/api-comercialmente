@@ -2,8 +2,12 @@
 
 require 'flight/Flight.php';
 
-Flight::route('/', function () {
-    echo 'hello world!';
-});
+
+function mostrarUsuarios(){
+    echo 'hola';
+}
+
+Flight::route('/usuarios','mostrarUsuarios');
+
 
 Flight::start();
