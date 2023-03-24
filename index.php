@@ -2,12 +2,10 @@
 
 require 'flight/Flight.php';
 
-
-function mostrarUsuarios(){
-    echo 'hola';
-}
-
-Flight::route('/usuarios','mostrarUsuarios');
-
+//IMPORTAR LOS ARCHIVOS DE CADA MANTENEDOR
+require 'clientes.php';
+require 'usuarios.php';
+require 'cotizaciones.php';
 
 Flight::start();
+?>
