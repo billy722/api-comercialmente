@@ -33,6 +33,18 @@ class Conexion{
         return $datos;
 
     }
+    public function crearRegistro($sentencia){
+
+        $conexion = $this->conectar();
+        $sentencia = $conexion->prepare($sentencia);
+        if($sentencia->execute()){
+            $this->cerrarConexion($conexion);
+            return true;
+        }else{
+            return false;
+        }
+
+    }
 
     public function cerrarConexion(PDO $conexion){
         $conexion = null;
