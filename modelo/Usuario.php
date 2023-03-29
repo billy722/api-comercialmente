@@ -43,6 +43,39 @@ class Usuario extends Conexion{
 
     }
 
+    /* public function modificarUsuario(){
+
+        //se reciben los datos enviados por post
+        $datos = Flight::request()->query;
+
+        //pregunto si vienen los datos necesarios
+        if($datos->correo==null || $datos->clave==null || $datos->estado==null || $datos->perfil==null){
+
+            Flight::json("204"); //FALTAN DATOS
+
+        }else{
+        
+            //ASIGNO LOS DATOS
+            $this->setCorreo($datos['correo']);
+            $this->setClave($datos['clave']);
+            $this->setEstado($datos['estado']);
+            $this->setPerfil($datos['perfil']);
+
+    
+
+           if($this->crearRegistro "update tb_usuarios SET correo = '".$this->correo."',
+                                                           clave = '".$this->clave."', 
+                                                           estado = '".$this->estado."',
+                                                           perfil = '".$this->perfil."'
+             WHERE (id_usuario = '".$this->id."')";){
+                Flight::json("201");//USUARIO ACTUALIZADO
+            }else{
+                Flight::json("406");//SOLICITUD RECIBIDA 
+            }   
+        }  
+
+    } */
+
 
     //SETTERS
     public function setId($id){
