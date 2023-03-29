@@ -42,6 +42,68 @@ class Cliente extends Conexion{
 
     }
 
+    public function modificarCliente(){
+
+        //se reciben los datos enviados por put
+        $datos = Flight::request()->query;
+
+        //pregunto si vienen los datos necesarios
+        if($datos->rut==null || $datos->nombre==null || $datos->telefono==null || $datos->correo==null){
+
+            Flight::json("204"); //FALTAN DATOS
+
+        }else{
+        
+            //ASIGNO LOS DATOS
+            $this->setId($datos['id']);
+            $this->setRut($datos['rut']);
+            $this->setNombre($datos['nombre']);
+            $this->setTelefono($datos['telefono']);
+            $this->setCorreo($datos['correo']);
+
+
+            if($this->crearRegistro("update tb_clientes SET rut_cliente = '".$this->rut."',
+                                                            nombre = '".$this->nombre."', 
+                                                            telefono = '".$this->telefono."',
+                                                            correo = '".$this->correo."'
+                         WHERE id_cliente = '".$this->id."'")){
+                Flight::json("201");//REGISTRO CREADO
+            }else{
+                Flight::json("406");//SOLICITUD RECIBIDA P
+            }   
+        }  
+
+    }
+
+    public function eliminarCliente(){
+
+        //se reciben los datos enviados por delete
+        $datos = Flight::request()->query;
+
+        //pregunto si vienen los datos necesarios
+        if($datos->rut==null || $datos->nombre==null || $datos->telefono==null || $datos->correo==null){
+
+            Flight::json("204"); //FALTAN DATOS
+
+        }else{
+        
+            //ASIGNO LOS DATOS
+            $this->setId($datos['id']);
+            $this->setRut($datos['rut']);
+            $this->setNombre($datos['nombre']);
+            $this->setTelefono($datos['telefono']);
+            $this->setCorreo($datos['correo']);
+
+
+            if($this->crearRegistro("delete from tb_clientes WHERE id_cliente = '".$this->id."'")){
+                Flight::json("201");//REGISTRO CREADO
+            }else{
+                Flight::json("406");//SOLICITUD RECIBIDA P
+            }   
+        }  
+
+    }
+
 
     //SETTERS
     public function setId($id){

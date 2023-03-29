@@ -43,37 +43,70 @@ class Producto extends Conexion{
     }
 
     
-    // public function modificarProducto(){
+     public function modificarProducto(){
 
-    //    //se reciben los datos enviados por post
-    //    $datos = Flight::request()->query;
+        //se reciben los datos enviados por post
+       $datos = Flight::request()->query;
 
-    //    //pregunto si vienen los datos necesarios
-    //    if($datos->nombre==null || $datos->descripcion==null || $datos->valor==null || $datos->estado==null){
+       //pregunto si vienen los datos necesarios
+        if($datos->nombre==null || $datos->descripcion==null || $datos->valor==null || $datos->estado==null){
 
-    //        Flight::json("204"); //FALTAN DATOS
+            Flight::json("204"); //FALTAN DATOS
 
-    //    }else{
+        }else{
        
-    //        //ASIGNO LOS DATOS
-    //        $this->setNombre($datos['nombre']);
-    //        $this->setDescripcion($datos['descripcion']);
-    //        $this->setValor($datos['valor']);
-    //        $this->setEstado($datos['estado']);
+            //ASIGNO LOS DATOS
+            $this->setId_Producto($datos['id_producto']);
+            $this->setNombre($datos['nombre']);
+            $this->setDescripcion($datos['descripcion']);
+            $this->setValor($datos['valor']);
+            $this->setEstado($datos['estado']);
 
 
-    //       if($this->crearRegistro "update tb_productos SET nombre = '".$this->nombre."',
-    //                                                        descripcion = '".$this->descripcion."', 
-    //                                                        valor = '".$this->valor."',
-    //                                                        estado = '".$this->estado."'
-    //          WHERE (id_producto = '".$this->id_producto."')";){
-    //             Flight::json("201");//PRODUCTO ACTUALIZADO
-    //         }else{
-    //             Flight::json("406");//SOLICITUD RECIBIDA 
-    //         }   
-    //     }  
+           if($this->crearRegistro ("update tb_productos SET nombre = '".$this->nombre."',
+                                                            descripcion = '".$this->descripcion."', 
+                                                            valor = '".$this->valor."',
+                                                            estado = '".$this->estado."'
+              WHERE (id_producto = '".$this->id_producto."')")){
+                 Flight::json("201");//PRODUCTO ACTUALIZADO
+             }else{
+                 Flight::json("406");//SOLICITUD RECIBIDA 
+             }   
+         }  
 
-    // }
+     }
+
+
+     public function eliminarProducto(){
+
+        //    //se reciben los datos enviados por post
+           $datos = Flight::request()->query;
+    
+        //    //pregunto si vienen los datos necesarios
+            if($datos->nombre==null || $datos->descripcion==null || $datos->valor==null || $datos->estado==null){
+    
+                Flight::json("204"); //FALTAN DATOS
+    
+            }else{
+           
+        //        //ASIGNO LOS DATOS
+                $this->setId_Producto($datos['id_producto']);
+                $this->setNombre($datos['nombre']);
+                $this->setDescripcion($datos['descripcion']);
+                $this->setValor($datos['valor']);
+                $this->setEstado($datos['estado']);
+    
+               
+               if($this->crearRegistro ("DELETE FROM tb_productos WHERE id_producto = '".$this->id_producto."'")){
+                     Flight::json("201");//PRODUCTO ACTUALIZADO
+                 }else{
+                     Flight::json("406");//SOLICITUD RECIBIDA 
+                 }   
+             }  
+    
+         }
+
+     
 
   //SETTERS
   public function setId_Producto($id_producto){

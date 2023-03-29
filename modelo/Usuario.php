@@ -116,7 +116,7 @@ class Usuario extends Conexion{
 
     }
 
-    /* public function modificarUsuario(){
+     public function modificarUsuario(){
 
         //se reciben los datos enviados por post
         $datos = Flight::request()->query;
@@ -129,6 +129,7 @@ class Usuario extends Conexion{
         }else{
         
             //ASIGNO LOS DATOS
+            $this->setId($datos['id']);
             $this->setCorreo($datos['correo']);
             $this->setClave($datos['clave']);
             $this->setEstado($datos['estado']);
@@ -136,18 +137,48 @@ class Usuario extends Conexion{
 
     
 
-           if($this->crearRegistro "update tb_usuarios SET correo = '".$this->correo."',
-                                                           clave = '".$this->clave."', 
+           if($this->crearRegistro ("update tb_usuarios SET correo = ".$this->correo.",     
+                                                           clave = '.$this->clave.', 
                                                            estado = '".$this->estado."',
                                                            perfil = '".$this->perfil."'
-             WHERE (id_usuario = '".$this->id."')";){
+             WHERE (id_usuario = '".$this->id."')")){
                 Flight::json("201");//USUARIO ACTUALIZADO
             }else{
                 Flight::json("406");//SOLICITUD RECIBIDA 
             }   
         }  
 
-    } */
+    } 
+
+
+    public function eliminarUsuario(){
+
+        //se reciben los datos enviados por post
+        $datos = Flight::request()->query;
+
+        //pregunto si vienen los datos necesarios
+        if($datos->correo==null || $datos->clave==null || $datos->estado==null || $datos->perfil==null){
+
+            Flight::json("204"); //FALTAN DATOS
+
+        }else{
+        
+            //ASIGNO LOS DATOS
+            $this->setId($datos['id']);
+            $this->setCorreo($datos['correo']);
+            $this->setClave($datos['clave']);
+            $this->setEstado($datos['estado']);
+            $this->setPerfil($datos['perfil']);
+ 
+
+           if($this->crearRegistro ("delete from tb_usuarios WHERE id_usuario = '".$this->id."'")){
+                Flight::json("201");//USUARIO ELIMINADO
+            }else{
+                Flight::json("406");//SOLICITUD RECIBIDA 
+            }   
+        }  
+
+    } 
 
 
     //SETTERS
