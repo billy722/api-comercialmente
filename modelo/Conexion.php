@@ -30,9 +30,14 @@ class Conexion{
 
         $this->cerrarConexion($conexion);
 
-        return $datos;
+        if($sentencia->rowCount()==0){
+            return false; //si filas vacias devuelve false 
+        }else{
+            return $datos; 
+        }
 
     }
+
     public function crearRegistro($sentencia){
 
         $conexion = $this->conectar();
@@ -48,6 +53,10 @@ class Conexion{
 
     public function cerrarConexion(PDO $conexion){
         $conexion = null;
+    }
+
+    protected function encriptar($dato){
+        return md5($dato);
     }
     
 }

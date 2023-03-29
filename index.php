@@ -14,5 +14,9 @@ require 'controlador/clientes.php';
 require 'controlador/usuarios.php';
 require 'controlador/cotizaciones.php';
 
+header("Content-type: applocation/json");
+header("Access-Control-Allow-Origin: *");
+http_response_code(200);
+
 Flight::start();
 ?>
