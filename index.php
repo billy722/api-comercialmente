@@ -6,6 +6,7 @@ require 'flight/Flight.php';
 require './modelo/Conexion.php';
 require './modelo/Producto.php';
 require './modelo/Cliente.php';
+require './modelo/Usuario.php';
 
 //IMPORTAR CONTROLADORES
 require 'controlador/productos.php';

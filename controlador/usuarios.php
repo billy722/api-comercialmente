@@ -1,36 +1,10 @@
 <?php
 
+$Usuario = new Usuario();
 
-// OBTENER TODOS LOS REGISTROS
-Flight::route('GET /usuarios','mostrarUsuarios');
+Flight::route('GET /usuario',array($Usuario,'obtenerUsuario'));
 
-//CREAR NUEVO REGISTRO
-Flight::route('POST /usuarios','agregarUsuarios');
+Flight::route('POST /usuario',array($Usuario,'crearUsuario'));
 
-//ACTUALIZAR EL REGISTRO COMPLETO
-Flight::route('PUT /usuarios','agregarUsuarios');
-
-//ACTUALIZAR PARTE DEL REGISTRO
-Flight::route('PATCH /usuarios','agregarUsuarios');
-
-//ELIMINAR REGISTRO
-Flight::route('DELETE /usuarios','borrarUsuario');
-
-
-function mostrarUsuarios(){
-    echo 'Esta es la lista de los usuarios';
-}
-function agregarUsuarios(){
-    echo "usuario creado";
-    Flight::json("201");
-}
-
-function borrarUsuario(){
-    echo 'Usuario borrado';
-}
-
-
-
-// Flight::start();
 
 ?>

@@ -14,6 +14,10 @@ class Producto extends Conexion{
         Flight::json($resultado);
     }
 
+  
+
+
+
 
 }
 
