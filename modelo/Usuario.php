@@ -3,6 +3,7 @@
 class Usuario extends Conexion{
 
     private $id;
+    private $nombre;
     private $correo;
     private $clave;
     private $estado;
@@ -20,7 +21,8 @@ class Usuario extends Conexion{
 
             //pregunto si vienen los datos necesarios
             if($datos->correo==null || $datos->clave==null){
-                Flight::json("204"); //FALTAN DATOS
+                // Flight::json("{204 : falta datos}"); //FALTAN DATOS
+                Respuestas::faltanDatos();
             }else{
             
                 //ASIGNO LOS DATOS
@@ -29,7 +31,7 @@ class Usuario extends Conexion{
                 
                 $resultado = $this->obtenerRegistros("select * from tb_usuarios where correo='$this->correo'");
                 if($resultado==false){
-                    Flight::json("Sin registros");
+                    Respuestas::noAutorizado();
                 }else{
                     //Hay registros
 
@@ -37,36 +39,23 @@ class Usuario extends Conexion{
                     if($resultado[0]['estado']==1){
 
                         //comparar claves
-                        if($resultado[0]['clave'] != false){
-                            // Flight::json("Clave ok");
+                        if($resultado[0]['clave'] == $this->clave){
 
                             $token = $this->generarToken($resultado[0]['id_usuario']);
                             if($token != false){
-                                echo "hola";
-
-                                $respuesta = [
-                                    'status' => "ok",
-                                    "result" => array()
-                                ];
-
-                                $respuesta["result"] = array (
-                                    "token" => $token
-                                );
-
-                                 header("Content-type: applocation/json");
-                                 http_response_code(200);
-                                 Flight::json($respuesta);
+                                
+                                Respuestas::devolverRegistros(array("token" => $token , "usuario" => $resultado[0]['nombre']));
 
                             }else{
-                                Flight::json("Error generar token");
+                                Respuestas::errorInterno();
                             }
 
                         }else{
-                            Flight::json("Clave incorrecta");
+                            Respuestas::datosIncorrectos();
                         }
 
                     }else{
-                        Flight::json("Usuario inactivo");
+                        Respuestas::noAutorizado();
                     }
 
                 }
@@ -94,7 +83,7 @@ class Usuario extends Conexion{
         $datos = Flight::request()->query;
 
         //pregunto si vienen los datos necesarios
-        if($datos->correo==null || $datos->clave==null || $datos->estado==null || $datos->perfil==null){
+        if($datos->correo==null || $datos->nombre==null || $datos->clave==null || $datos->estado==null || $datos->perfil==null){
 
             Flight::json("204"); //FALTAN DATOS
 
@@ -102,15 +91,16 @@ class Usuario extends Conexion{
         
             //ASIGNO LOS DATOS
             $this->setCorreo($datos['correo']);
+            $this->setNombre($datos['nombre']);
             $this->setClave(parent::encriptar($datos['clave']));
             $this->setEstado($datos['estado']);
             $this->setPerfil($datos['perfil']);
 
 
-            if($this->crearRegistro("INSERT into tb_usuarios (correo, clave, estado, perfil) values('$this->correo','$this->clave','$this->estado','$this->perfil');")){
-                Flight::json("201");//USUARIO CREADO
+            if($this->crearRegistro("INSERT into tb_usuarios (nombre, correo, clave, estado, perfil) values('$this->nombre','$this->correo','$this->clave','$this->estado','$this->perfil');")){
+                Respuestas::registroCreado();
             }else{
-                Flight::json("406");//SOLICITUD RECIBIDA P
+                Respuestas::errorInterno();
             }   
         }  
 
@@ -122,7 +112,7 @@ class Usuario extends Conexion{
         $datos = Flight::request()->query;
 
         //pregunto si vienen los datos necesarios
-        if($datos->correo==null || $datos->clave==null || $datos->estado==null || $datos->perfil==null){
+        if($datos->correo==null || $datos->nombre==null || $datos->clave==null || $datos->estado==null || $datos->perfil==null){
 
             Flight::json("204"); //FALTAN DATOS
 
@@ -130,6 +120,7 @@ class Usuario extends Conexion{
         
             //ASIGNO LOS DATOS
             $this->setId($datos['id']);
+            $this->setNombre($datos['nombre']);
             $this->setCorreo($datos['correo']);
             $this->setClave($datos['clave']);
             $this->setEstado($datos['estado']);
@@ -138,6 +129,7 @@ class Usuario extends Conexion{
     
 
            if($this->crearRegistro ("update tb_usuarios SET correo = ".$this->correo.",     
+                                                           nombre = '.$this->nombre.', 
                                                            clave = '.$this->clave.', 
                                                            estado = '".$this->estado."',
                                                            perfil = '".$this->perfil."'
@@ -184,6 +176,9 @@ class Usuario extends Conexion{
     //SETTERS
     public function setId($id){
         $this->id = $id;
+    }
+    public function setNombre($nombre){
+        $this->nombre = $nombre;
     }
     public function setCorreo($correo){
         $this->correo = $correo;

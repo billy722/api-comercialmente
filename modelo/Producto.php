@@ -5,7 +5,7 @@ class Producto extends Conexion{
     private $id_producto;
     private $nombre;
     private $descripcion;
-    private $valor;
+    private $precio;
     private $estado;
 
     public function obtenerProductos(){
@@ -20,7 +20,7 @@ class Producto extends Conexion{
         $datos = Flight::request()->query;
 
         //pregunto si vienen los datos necesarios
-        if($datos->nombre==null || $datos->descripcion==null || $datos->valor==null || $datos->estado==null){
+        if($datos->nombre==null || $datos->descripcion==null || $datos->precio==null || $datos->estado==null){
 
             Flight::json("204"); //FALTAN DATOS
 
@@ -29,7 +29,7 @@ class Producto extends Conexion{
             //ASIGNO LOS DATOS
             $this->setNombre($datos['nombre']);
             $this->setDescripcion($datos['descripcion']);
-            $this->setValor($datos['valor']);
+            $this->setPrecio($datos['precio']);
             $this->setEstado($datos['estado']);
 
            
@@ -49,7 +49,7 @@ class Producto extends Conexion{
        $datos = Flight::request()->query;
 
        //pregunto si vienen los datos necesarios
-        if($datos->nombre==null || $datos->descripcion==null || $datos->valor==null || $datos->estado==null){
+        if($datos->nombre==null || $datos->descripcion==null || $datos->precio==null || $datos->estado==null){
 
             Flight::json("204"); //FALTAN DATOS
 
@@ -59,13 +59,13 @@ class Producto extends Conexion{
             $this->setId_Producto($datos['id_producto']);
             $this->setNombre($datos['nombre']);
             $this->setDescripcion($datos['descripcion']);
-            $this->setValor($datos['valor']);
+            $this->setPrecio($datos['precio']);
             $this->setEstado($datos['estado']);
 
 
            if($this->crearRegistro ("update tb_productos SET nombre = '".$this->nombre."',
                                                             descripcion = '".$this->descripcion."', 
-                                                            valor = '".$this->valor."',
+                                                            precio = '".$this->precio."',
                                                             estado = '".$this->estado."'
               WHERE (id_producto = '".$this->id_producto."')")){
                  Flight::json("201");//PRODUCTO ACTUALIZADO
@@ -83,7 +83,7 @@ class Producto extends Conexion{
            $datos = Flight::request()->query;
     
         //    //pregunto si vienen los datos necesarios
-            if($datos->nombre==null || $datos->descripcion==null || $datos->valor==null || $datos->estado==null){
+            if($datos->nombre==null || $datos->descripcion==null || $datos->precio==null || $datos->estado==null){
     
                 Flight::json("204"); //FALTAN DATOS
     
@@ -93,7 +93,7 @@ class Producto extends Conexion{
                 $this->setId_Producto($datos['id_producto']);
                 $this->setNombre($datos['nombre']);
                 $this->setDescripcion($datos['descripcion']);
-                $this->setValor($datos['valor']);
+                $this->setPrecio($datos['precio']);
                 $this->setEstado($datos['estado']);
     
                
@@ -118,8 +118,8 @@ public function setNombre($nombre){
 public function setDescripcion($descripcion){
     $this->descripcion = $descripcion;
 }
-public function setValor($valor){
-    $this->valor = $valor;
+public function setPrecio($precio){
+    $this->precio = $precio;
 }
 public function setEstado($estado){
     $this->estado = $estado;
