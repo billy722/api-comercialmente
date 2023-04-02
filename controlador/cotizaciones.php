@@ -1,35 +1,14 @@
 <?php
 
+$Cotizacion = new Cotizacion();
 
-// OBTENER TODOS LOS REGISTROS
-Flight::route('GET perros/','mostrarPerros');
+Flight::route('GET /cotizaciones',array($Cotizacion,'obtenerCotizacion'));
 
-//CREAR NUEVO REGISTRO
-Flight::route('POST /perros','agregarPerros');
+Flight::route('POST /cotizaciones',array($Cotizacion,'crearCotizacion'));
 
-//ACTUALIZAR EL REGISTRO COMPLETO
-Flight::route('PUT /perros','agregarPerros');
+Flight::route('PUT /cotizaciones',array($Cotizacion,'modificarCotizacion'));
 
-//ACTUALIZAR PARTE DEL REGISTRO
-Flight::route('PATCH /perros','agregarPerros');
+Flight::route('DELETE /cotizaciones',array($Cotizacion,'eliminarCotizacion'));
 
-//ELIMINAR REGISTRO
-Flight::route('DELETE /perros','borrarPerro');
-
-
-function mostrarPerros(){
-    echo 'Esta es la lista de los perros';
-}
-function agregarPerros(){
-    echo 'perro agregado';
-}
-
-function borrarPerro(){
-    echo 'perro borrado';
-}
-
-
-
-// Flight::start();
 
 ?>
