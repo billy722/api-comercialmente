@@ -11,11 +11,16 @@ require 'clases/Respuestas.php';
 
 //IMPORTACION DE MODELO (CLASES)
 require './modelo/Conexion.php';
+
 require './modelo/Producto.php';
 require './modelo/Cliente.php';
 require './modelo/Usuario.php';
-require './modelo/Colaborador.php';
 require './modelo/Cotizacion.php';
+require './modelo/Colaborador.php';
+require './modelo/Pregunta.php';
+require './modelo/Problematica.php';
+require './modelo/Cuestionario.php';
+require './modelo/Alternativa.php';
 
 //IMPORTAR CONTROLADORES
 require 'controlador/productos.php';
@@ -23,6 +28,10 @@ require 'controlador/clientes.php';
 require 'controlador/usuarios.php';
 require 'controlador/cotizaciones.php';
 require 'controlador/colaboradores.php';
+require 'controlador/preguntas.php';
+require 'controlador/problematicas.php';
+require 'controlador/cuestionarios.php';
+require 'controlador/alternativas.php';
 
 Flight::start();
 ?>
