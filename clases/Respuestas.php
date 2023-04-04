@@ -6,6 +6,12 @@
     public static function registroCreado(){
         Respuestas::responder("ok", "Registro creado");
     }
+    public static function registroModificado(){
+        Respuestas::responder("ok", "Registro modificado");
+    }
+    public static function registroEliminado(){
+        Respuestas::responder("ok", "Registro eliminado");
+    }
     public static function devolverRegistros($registros){
         Respuestas::responder("ok", array("data" => $registros ));
     }

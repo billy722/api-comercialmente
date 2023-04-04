@@ -2,7 +2,7 @@
 
 class Producto extends Conexion{
 
-    private $id_producto;
+    private $id;
     private $nombre;
     private $descripcion;
     private $precio;
@@ -22,7 +22,12 @@ class Producto extends Conexion{
 
 
         $resultado = $this->obtenerRegistros("SELECT * from tb_productos where categoria=$this->categoria");
-        Flight::json($resultado);
+        
+        if($resultado==false){
+            Respuestas::sinRegistros();
+        }else{
+            Respuestas::devolverRegistros($resultado);
+        }
     }
 
     public function crearProducto(){
@@ -33,7 +38,7 @@ class Producto extends Conexion{
         //pregunto si vienen los datos necesarios
         if($datos->nombre==null || $datos->descripcion==null || $datos->precio==null || $datos->estado==null || $datos->categoria==null){
 
-            Flight::json("204"); //FALTAN DATOS
+            Respuestas::faltanDatos();
 
         }else{
         
@@ -46,9 +51,9 @@ class Producto extends Conexion{
 
            
             if($this->crearRegistro("INSERT INTO tb_productos (nombre, descripcion, precio, estado, categoria) values('$this->nombre','$this->descripcion','$this->precio','$this->estado','$this->categoria');")){
-                Flight::json("201");//PRODUCTO CREADO
+                Respuestas::registroCreado();
             }else{
-                Flight::json("406");//SOLICITUD RECIBIDA P
+                Respuestas::errorInterno();
             }   
         }  
 
@@ -61,14 +66,14 @@ class Producto extends Conexion{
        $datos = Flight::request()->query;
 
        //pregunto si vienen los datos necesarios
-        if($datos->nombre==null || $datos->descripcion==null || $datos->precio==null || $datos->estado==null || $datos->categoria==null){
+        if($datos->id==null || $datos->nombre==null || $datos->descripcion==null || $datos->precio==null || $datos->estado==null || $datos->categoria==null){
 
-            Flight::json("204"); //FALTAN DATOS
+            Respuestas::faltanDatos();
 
         }else{
        
             //ASIGNO LOS DATOS
-            $this->setId_Producto($datos['id_producto']);
+            $this->setId($datos['id']);
             $this->setNombre($datos['nombre']);
             $this->setDescripcion($datos['descripcion']);
             $this->setPrecio($datos['precio']);
@@ -81,10 +86,10 @@ class Producto extends Conexion{
                                                             precio = '".$this->precio."',
                                                             estado = '".$this->estado."',
                                                             categoria = '".$this->categoria."'
-              WHERE (id_producto = '".$this->id_producto."')")){
-                 Flight::json("201");//PRODUCTO ACTUALIZADO
+              WHERE (id_producto = '".$this->id."')")){
+                 Respuestas::registroModificado();
              }else{
-                 Flight::json("406");//SOLICITUD RECIBIDA 
+                 Respuestas::errorInterno();
              }   
          }  
 
@@ -93,6 +98,24 @@ class Producto extends Conexion{
 
      public function eliminarProducto(){
 
+                //se reciben los datos enviados por post
+                $datos = Flight::request()->query;
+
+                //pregunto si vienen los datos necesarios
+                if($datos->id==null){
+                    Respuestas::faltanDatos();
+                }else{
+                
+                    //ASIGNO LOS DATOS
+                    $this->setId($datos['id']);
+                   
+                    if($this->crearRegistro("DELETE from tb_productos where id_producto = $this->id")){
+                        Respuestas::registroEliminado();
+                    }else{
+                        Respuestas::errorInterno();
+                    }   
+
+                } 
      
     
     }
@@ -100,8 +123,8 @@ class Producto extends Conexion{
      
 
   //SETTERS
-public function setId_Producto($id_producto){
-    $this->id_producto = $id_producto;
+public function setId($id){
+    $this->id = $id;
 }
 public function setNombre($nombre){
     $this->nombre = $nombre;

@@ -80,23 +80,17 @@ class Colaborador extends Conexion{
         $datos = Flight::request()->query;
 
         //pregunto si vienen los datos necesarios
-        if($datos->id==null || $datos->correo==null || $datos->telefono==null || $datos->estado==null){
+        if($datos->id==null){
 
-            Flight::json("204"); //FALTAN DATOS
+            Respuestas::faltanDatos();
 
         }else{
-        
-            //ASIGNO LOS DATOS
             $this->setId($datos['id']);
-            $this->setCorreo($datos['correo']);
-            $this->setTelefono($datos['telefono']);
-            $this->setEstado($datos['estado']);
-
 
             if($this->crearRegistro("DELETE FROM tb_colaboradores WHERE (`id_colaborador` = '.$this->id.')")){
-                Flight::json("201");//COLABORADOR ELIMINADO
+                Respuestas::registroEliminado();
             }else{
-                Flight::json("406");//SOLICITUD RECIBIDA P
+                Respuestas::errorInterno();
             }   
         }  
 
