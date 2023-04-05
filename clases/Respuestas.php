@@ -29,7 +29,7 @@
     }
 
     public static function faltanDatos(){
-        Respuestas::responder("error", array("error_id" => 204, "error_msg" => "Ingrese los datos correctamente"));
+        Respuestas::responder("error", array("error_id" => 204, "error_msg" => "Faltan datos en la solicitud"));
     }
 
     public static function sinRegistros(){

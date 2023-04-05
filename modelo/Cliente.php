@@ -11,7 +11,22 @@ class Cliente extends Conexion{
     public function obtenerClientes(){
 
         $resultado = $this->obtenerRegistros("select * from tb_clientes");
-        Flight::json($resultado);
+        Respuestas::devolverRegistros($resultado);
+    }
+
+    public function obtenerCliente(){
+        $datos = Flight::request()->query;
+
+        //pregunto si vienen los datos necesarios
+        if($datos->id_cliente==null){
+
+            Respuestas::faltanDatos();
+
+        }else{
+            $this->setId($datos['id_cliente']);
+            $resultado = $this->obtenerRegistros("select * from tb_clientes where id_cliente=".$this->id);
+            Respuestas::devolverRegistros($resultado);
+        }    
     }
 
     public function crearCliente(){
@@ -22,7 +37,7 @@ class Cliente extends Conexion{
         //pregunto si vienen los datos necesarios
         if($datos->rut==null || $datos->nombre==null || $datos->telefono==null || $datos->correo==null){
 
-            Flight::json("204"); //FALTAN DATOS
+            Respuestas::faltanDatos();
 
         }else{
         
@@ -33,10 +48,10 @@ class Cliente extends Conexion{
             $this->setCorreo($datos['correo']);
 
 
-            if($this->crearRegistro("INSERT INTO tb_clientes (rut_cliente, nombre, telefono, correo) values('$this->rut','$this->nombre','$this->telefono','$$this->correo');")){
-                Flight::json("201");//REGISTRO CREADO
+            if($this->crearRegistro("INSERT INTO tb_clientes (rut_cliente, nombre, telefono, correo) values('$this->rut','$this->nombre','$this->telefono','$this->correo');")){
+                Respuestas::registroCreado();
             }else{
-                Flight::json("406");//SOLICITUD RECIBIDA P
+                Respuestas::errorInterno();
             }   
         }  
 
@@ -50,7 +65,7 @@ class Cliente extends Conexion{
         //pregunto si vienen los datos necesarios
         if($datos->rut==null || $datos->nombre==null || $datos->telefono==null || $datos->correo==null){
 
-            Flight::json("204"); //FALTAN DATOS
+            Respuestas::faltanDatos();
 
         }else{
         
@@ -67,9 +82,10 @@ class Cliente extends Conexion{
                                                             telefono = '".$this->telefono."',
                                                             correo = '".$this->correo."'
                          WHERE id_cliente = '".$this->id."'")){
-                Flight::json("201");//REGISTRO CREADO
+                
+                Respuestas::registroModificado();
             }else{
-                Flight::json("406");//SOLICITUD RECIBIDA P
+                Respuestas::errorInterno();
             }   
         }  
 
@@ -81,24 +97,19 @@ class Cliente extends Conexion{
         $datos = Flight::request()->query;
 
         //pregunto si vienen los datos necesarios
-        if($datos->rut==null || $datos->nombre==null || $datos->telefono==null || $datos->correo==null){
+        if($datos->id==null){
 
-            Flight::json("204"); //FALTAN DATOS
+            Respuestas::faltanDatos();
 
         }else{
         
             //ASIGNO LOS DATOS
             $this->setId($datos['id']);
-            $this->setRut($datos['rut']);
-            $this->setNombre($datos['nombre']);
-            $this->setTelefono($datos['telefono']);
-            $this->setCorreo($datos['correo']);
-
 
             if($this->crearRegistro("delete from tb_clientes WHERE id_cliente = '".$this->id."'")){
-                Flight::json("201");//REGISTRO CREADO
+                Respuestas::registroEliminado();
             }else{
-                Flight::json("406");//SOLICITUD RECIBIDA P
+                Respuestas::errorInterno();
             }   
         }  
 
