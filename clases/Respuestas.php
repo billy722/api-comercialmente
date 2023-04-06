@@ -21,19 +21,19 @@
     }
 
     public static function datosIncorrectos(){
-        Respuestas::responder("error", array("error_id" => 204, "error_msg" => "Datos Incorrectos"));
+        Respuestas::responder("error", array("error_id" => 403, "error_msg" => "Datos Incorrectos"));
     }
 
     public static function noAutorizado(){
-        Respuestas::responder("error", array("error_id" => 203, "error_msg" => "Datos Incorrectos"));
+        Respuestas::responder("error", array("error_id" => 401, "error_msg" => "No tiene permisos para acceder"));
     }
 
     public static function faltanDatos(){
-        Respuestas::responder("error", array("error_id" => 204, "error_msg" => "Faltan datos en la solicitud"));
+        Respuestas::responder("error", array("error_id" => 400, "error_msg" => "Faltan datos en la solicitud"));
     }
 
     public static function sinRegistros(){
-        Respuestas::responder("error", array("error_id" => 201, "error_msg" => "No hay registros"));
+        Respuestas::responder("error", array("error_id" => 204, "error_msg" => "No hay registros"));
     }
 
 

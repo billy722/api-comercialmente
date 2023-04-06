@@ -31,7 +31,11 @@ class Cotizacion extends Conexion{
             $this->setId_Cotizacion($datos['id_cotizacion']);
 
             $resultado = $this->obtenerRegistros("SELECT * FROM vista_productos_cotizacion where id_cotizacion=".$this->id_cotizacion);
-            Respuestas::devolverRegistros($resultado);
+            if($resultado){
+                Respuestas::devolverRegistros($resultado);
+            }else{
+                Respuestas::sinRegistros();
+            }
         }
     }
     public function obtenerDatosCotizacion(){
