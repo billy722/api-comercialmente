@@ -3,15 +3,21 @@
 class Colaborador extends Conexion{
 
     private $id;
+    private $nombre;
     private $correo;
     private $telefono;
+    private $funciones;
     private $estado;
     
 
     public function obtenerColaborador(){
 
         $resultado = $this->obtenerRegistros("select * from tb_colaboradores");
-        Flight::json($resultado);
+        if($resultado){
+            Respuestas::devolverRegistros($resultado);
+        }else{
+            Respuestas::sinRegistros();
+        }
     }
 
     public function crearColaborador(){
@@ -20,23 +26,24 @@ class Colaborador extends Conexion{
         $datos = Flight::request()->query;
 
         //pregunto si vienen los datos necesarios
-        if($datos->id==null || $datos->correo==null || $datos->telefono==null || $datos->estado==null){
+        if($datos->correo==null || $datos->nombre==null || $datos->telefono==null || $datos->funciones==null){
 
-            Flight::json("204"); //FALTAN DATOS
+            Respuestas::faltanDatos();
 
         }else{
         
             //ASIGNO LOS DATOS
             $this->setId($datos['id']);
+            $this->setNombre($datos['nombre']);
             $this->setCorreo($datos['correo']);
             $this->setTelefono($datos['telefono']);
-            $this->setEstado($datos['estado']);
+            $this->setFunciones($datos['funciones']);
+            $this->setEstado(1);
 
-
-            if($this->crearRegistro("INSERT INTO tb_colaboradores (`id_colaborador`, `correo`, `telefono`, `estado`) VALUES ('.$this->id.', '.$this->correo.', '$this->telefono', '$this->estado')")){
-                Flight::json("201");//COLABORADOR CREADO
+            if($this->crearRegistro("INSERT INTO tb_colaboradores (nombre,correo, telefono, funciones, estado) VALUES ('$this->nombre','$this->correo', '$this->telefono', '$this->funciones', '$this->estado')")){
+                Respuestas::registroCreado();
             }else{
-                Flight::json("406");//SOLICITUD RECIBIDA P
+                Respuestas::errorInterno();
             }   
         }  
 
@@ -80,14 +87,14 @@ class Colaborador extends Conexion{
         $datos = Flight::request()->query;
 
         //pregunto si vienen los datos necesarios
-        if($datos->id==null){
+        if($datos->id_colaborador==null){
 
             Respuestas::faltanDatos();
 
         }else{
-            $this->setId($datos['id']);
+            $this->setId($datos['id_colaborador']);
 
-            if($this->crearRegistro("DELETE FROM tb_colaboradores WHERE (`id_colaborador` = '.$this->id.')")){
+            if($this->crearRegistro("DELETE FROM tb_colaboradores WHERE id_colaborador = $this->id" )){
                 Respuestas::registroEliminado();
             }else{
                 Respuestas::errorInterno();
@@ -103,11 +110,18 @@ class Colaborador extends Conexion{
     public function setId($id){
         $this->id = $id;
     }
+    public function setNombre($nombre){
+        $this->nombre = $nombre;
+    }
     public function setCorreo($correo){
         $this->correo = $correo;
     }
     public function setTelefono($telefono){
         $this->telefono = $telefono;
+    }
+    
+    public function setFunciones($funciones){
+        $this->funciones = $funciones;
     }
     public function setEstado($estado){
         $this->estado = $estado;
