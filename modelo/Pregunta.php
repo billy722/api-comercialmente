@@ -7,10 +7,14 @@ class Pregunta extends Conexion{
     private $estado;
     
 
-    public function obtenerPregunta(){
+    public function obtenerPreguntas(){
 
-        $resultado = $this->obtenerRegistros("select * from tb_pregunta");
-        Flight::json($resultado);
+        $resultado = $this->obtenerRegistros("select * from tb_preguntas");
+        if($resultado){
+            Respuestas::devolverRegistros($resultado);
+        }else{
+            Respuestas::sinRegistros();
+        }
     }
 
     public function crearPregunta(){
@@ -19,22 +23,17 @@ class Pregunta extends Conexion{
         $datos = Flight::request()->query;
 
         //pregunto si vienen los datos necesarios
-        if($datos->id==null || $datos->pregunta==null || $datos->estado==null){
-
-            Flight::json("204"); //FALTAN DATOS
-
+        if($datos->pregunta==null){
+            Respuestas::faltanDatos();
         }else{
         
             //ASIGNO LOS DATOS
-            $this->setId($datos['id']);
             $this->setPregunta($datos['pregunta']);
-            $this->setEstado($datos['estado']);
 
-
-            if($this->crearRegistro("insert into tb_pregunta (`pregunta`, `estado`) VALUES ('.$this->pregunta.', '.$this->estado.')")){
-                Flight::json("201");//PREGUNTA CREADA
+            if($this->crearRegistro("insert into tb_preguntas (pregunta, estado) VALUES ('.$this->pregunta.', 1)")){
+                Respuestas::registroCreado();
             }else{
-                Flight::json("406");//SOLICITUD RECIBIDA P
+                Respuestas::errorInterno();
             }   
         }  
 
@@ -58,7 +57,7 @@ class Pregunta extends Conexion{
             $this->setEstado($datos['estado']);
 
 
-            if($this->crearRegistro("UPDATE tb_pregunta SET `pregunta` = '.$this->pregunta.', `estado` = '.$this->estado.' WHERE (`id_pregunta` = '.$this->id.')")){
+            if($this->crearRegistro("UPDATE tb_preguntas SET `pregunta` = '.$this->pregunta.', `estado` = '.$this->estado.' WHERE (`id_pregunta` = '.$this->id.')")){
                 Flight::json("201");//COLABORADOR MODIFICADO
             }else{
                 Flight::json("406");//SOLICITUD RECIBIDA P
@@ -86,7 +85,7 @@ class Pregunta extends Conexion{
             $this->setEstado($datos['estado']);
 
 
-            if($this->crearRegistro("DELETE FROM tb_pregunta WHERE (`id_pregunta` = '.$this->id.')")){
+            if($this->crearRegistro("DELETE FROM tb_preguntas WHERE (`id_pregunta` = '.$this->id.')")){
                 Flight::json("201");//COLABORADOR ELIMINADO
             }else{
                 Flight::json("406");//SOLICITUD RECIBIDA P
