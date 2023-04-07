@@ -5,14 +5,30 @@ class Producto extends Conexion{
     private $id;
     private $nombre;
     private $descripcion;
+    private $tareas;
     private $precio;
     private $estado;
     private $categoria;
+    private $tiempo_ejecucion;
 
     public function obtenerProductos(){
 
         $resultado = $this->obtenerRegistros("SELECT * from tb_productos");
         Flight::json($resultado);
+    }
+
+    public function obtenerProducto(){
+        
+        $datos = Flight::request()->query;
+        $this->setId($datos['id_producto']);
+
+        $resultado = $this->obtenerRegistros("SELECT * from tb_productos where id_producto=$this->id");
+        
+        if($resultado==false){
+            Respuestas::sinRegistros();
+        }else{
+            Respuestas::devolverRegistros($resultado);
+        }
     }
 
     public function obtenerProductosCategoria(){
@@ -36,7 +52,7 @@ class Producto extends Conexion{
         $datos = Flight::request()->query;
 
         //pregunto si vienen los datos necesarios
-        if($datos->nombre==null || $datos->descripcion==null || $datos->precio==null || $datos->estado==null || $datos->categoria==null){
+        if($datos->nombre==null || $datos->descripcion==null || $datos->tareas==null || $datos->precio==null || $datos->categoria==null || $datos->tiempo_ejecucion==null){
 
             Respuestas::faltanDatos();
 
@@ -45,12 +61,14 @@ class Producto extends Conexion{
             //ASIGNO LOS DATOS
             $this->setNombre($datos['nombre']);
             $this->setDescripcion($datos['descripcion']);
+            $this->setTareas($datos['tareas']);
             $this->setPrecio($datos['precio']);
-            $this->setEstado($datos['estado']);
+            $this->setEstado("1");
             $this->setCategoria($datos['categoria']);
+            $this->setTiempoEjecucion($datos['tiempo_ejecucion']);
 
            
-            if($this->crearRegistro("INSERT INTO tb_productos (nombre, descripcion, precio, estado, categoria) values('$this->nombre','$this->descripcion','$this->precio','$this->estado','$this->categoria');")){
+            if($this->crearRegistro("INSERT INTO tb_productos (nombre, descripcion, tareas, precio, estado, categoria, tiempo_ejecucion) values('$this->nombre','$this->descripcion','$this->tareas','$this->precio','$this->estado','$this->categoria','$this->tiempo_ejecucion');")){
                 Respuestas::registroCreado();
             }else{
                 Respuestas::errorInterno();
@@ -140,6 +158,12 @@ public function setEstado($estado){
 }
 public function setCategoria($categoria){
     $this->categoria = $categoria;
+}
+public function setTareas($tareas){
+    $this->tareas = $tareas;
+}
+public function setTiempoEjecucion($tiempo_ejecucion){
+    $this->tiempo_ejecucion = $tiempo_ejecucion;
 }
 
 
