@@ -3,14 +3,17 @@
 class Problematica extends Conexion{
 
     private $id;
-    private $nombre;
     private $descripcion;
     
 
     public function obtenerProblematica(){
 
         $resultado = $this->obtenerRegistros("select * from tb_problematica");
-        Flight::json($resultado);
+        if($resultado){
+            Respuestas::devolverRegistros($resultado);
+        }else{
+            Respuestas::sinRegistros();
+        }
     }
 
     public function crearProblematica(){
@@ -19,22 +22,19 @@ class Problematica extends Conexion{
         $datos = Flight::request()->query;
 
         //pregunto si vienen los datos necesarios
-        if($datos->id==null || $datos->nombre==null || $datos->descripcion==null){
+        if($datos->descripcion==null){
 
-            Flight::json("204"); //FALTAN DATOS
+            Respuestas::faltanDatos();
 
         }else{
         
             //ASIGNO LOS DATOS
-            $this->setId($datos['id']);
-            $this->setPregunta($datos['nombre']);
-            $this->setEstado($datos['descripcion']);
+            $this->setDescripcion($datos['descripcion']);
 
-
-            if($this->crearRegistro("INSERT INTO tb_problematica (`nombre`, `descripcion`) VALUES ('.$this->nombre.', '.$this->descripcion.')")){
-                Flight::json("201");//PROBLEMATICA CREADA
+            if($this->crearRegistro("INSERT INTO tb_problematica (descripcion) VALUES ('$this->descripcion')")){
+                Respuestas::registroCreado();
             }else{
-                Flight::json("406");//SOLICITUD RECIBIDA P
+                 Respuestas::errorInterno();
             }   
         }  
 
@@ -54,12 +54,9 @@ class Problematica extends Conexion{
         
             //ASIGNO LOS DATOS
             $this->setId($datos['id']);
-            $this->setPregunta($datos['nombre']);
-            $this->setEstado($datos['descripcion']);
 
 
-            if($this->crearRegistro("UPDATE tb_problematica SET `nombre` = '.$this->nombre.', 
-                                                                `descripcion` = '.$this->descripcion.' 
+            if($this->crearRegistro("UPDATE tb_problematica SET descripcion = '.$this->descripcion.' 
                                                             WHERE (`id_problematica` = '.$this->id.')")){
                 Flight::json("201");//PROBLEMATICA MODIFICADA
             }else{
@@ -76,22 +73,19 @@ class Problematica extends Conexion{
         $datos = Flight::request()->query;
 
         //pregunto si vienen los datos necesarios
-        if($datos->id==null || $datos->nombre==null || $datos->descripcion==null){
+        if($datos->id_problematica==null){
 
-            Flight::json("204"); //FALTAN DATOS
+            Respuestas::faltanDatos();
 
         }else{
         
             //ASIGNO LOS DATOS
-            $this->setId($datos['id']);
-            $this->setPregunta($datos['nombre']);
-            $this->setEstado($datos['descripcion']);
+            $this->setId($datos['id_problematica']);
 
-
-            if($this->crearRegistro("DELETE FROM tb_problematica WHERE (`id_problematica` = '.$this->id.')")){
-                Flight::json("201");//PROBLEMATICA ELIMINADO
+            if($this->crearRegistro("DELETE FROM tb_problematica WHERE id_problematica = $this->id")){
+                Respuestas::registroEliminado();
             }else{
-                Flight::json("406");//SOLICITUD RECIBIDA P
+                Respuestas::errorInterno();
             }   
         }  
 
@@ -104,9 +98,7 @@ class Problematica extends Conexion{
     public function setId($id){
         $this->id = $id;
     }
-    public function setNombre($nombre){
-        $this->nombre = $nombre;
-    }
+
     public function setDescripcion($descripcion){
         $this->descripcion = $descripcion;
     }

@@ -30,7 +30,7 @@ class Pregunta extends Conexion{
             //ASIGNO LOS DATOS
             $this->setPregunta($datos['pregunta']);
 
-            if($this->crearRegistro("insert into tb_preguntas (pregunta, estado) VALUES ('.$this->pregunta.', 1)")){
+            if($this->crearRegistro("insert into tb_preguntas (pregunta, estado) VALUES ('$this->pregunta', 1)")){
                 Respuestas::registroCreado();
             }else{
                 Respuestas::errorInterno();
