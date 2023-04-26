@@ -10,8 +10,10 @@ class Cliente extends Conexion{
 
     public function obtenerClientes(){
 
-        $resultado = $this->obtenerRegistros("select * from tb_clientes");
-        Respuestas::devolverRegistros($resultado);
+        // $resultado = $this->obtenerRegistros("select * from tb_clientes");
+        // Respuestas::devolverRegistros($resultado);
+
+        echo "ahi van los clientes socio";
     }
 
     public function obtenerCliente(){
