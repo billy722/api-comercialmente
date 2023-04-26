@@ -2,10 +2,10 @@
 
 class Conexion{
 
-    private $servidor = "35.208.73.113";
-    private $usuario = "ufh6rigx0v7nd";
-    private $database = "db5v2ka8ugxghx";
-    private $password = "comercialmente.2023";
+    private $servidor = "localhost";
+    private $usuario = "com830cl_cotizador";
+    private $database = "com830cl_cotizador";
+    private $password = "Cotizador8253";
 
     public function conectar(){
 

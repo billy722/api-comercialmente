@@ -73,22 +73,19 @@ class Pregunta extends Conexion{
         $datos = Flight::request()->query;
 
         //pregunto si vienen los datos necesarios
-        if($datos->id==null || $datos->pregunta==null || $datos->estado==null){
+        if($datos->id_pregunta==null){
 
-            Flight::json("204"); //FALTAN DATOS
+            Respuestas::faltanDatos();
 
         }else{
         
             //ASIGNO LOS DATOS
-            $this->setId($datos['id']);
-            $this->setPregunta($datos['pregunta']);
-            $this->setEstado($datos['estado']);
+            $this->setId($datos['id_pregunta']);
 
-
-            if($this->crearRegistro("DELETE FROM tb_preguntas WHERE (`id_pregunta` = '.$this->id.')")){
-                Flight::json("201");//COLABORADOR ELIMINADO
+            if($this->crearRegistro("DELETE FROM tb_preguntas WHERE id_pregunta = $this->id ;")){
+                Respuestas::registroEliminado();
             }else{
-                Flight::json("406");//SOLICITUD RECIBIDA P
+                Respuestas::errorInterno();
             }   
         }  
 
