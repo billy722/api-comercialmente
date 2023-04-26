@@ -13,6 +13,7 @@ class Conexion{
 
             $conexion =  new PDO("mysql:host=$this->servidor;dbname=$this->database",$this->usuario,$this->password);
             $conexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            echo "conexion exitosa";
             return $conexion;
 
         }catch(PDOException $excepcion){
