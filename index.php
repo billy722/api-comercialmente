@@ -1,5 +1,6 @@
 <?php
 require 'flight/Flight.php';
+require 'vendor/autoload.php';
 require './modelo/Cliente.php';
 
 $Cliente = new Cliente();
