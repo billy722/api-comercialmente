@@ -1,10 +1,11 @@
 <?php
 require 'flight/Flight.php';
-Flight::start();
 
 $Cliente = new Cliente();
 Flight::route('GET /clientes',array($Cliente,'obtenerClientes'));
 Flight::json("hola");
+echo "hola";
+Flight::start();
 
 // header('Access-Control-Allow-Origin: *');
 // header('Content-Type: application/json');
