@@ -1,4 +1,7 @@
 <?php
+require 'flight/Flight.php';
+Flight::start();
+
 echo "hola";
 // header('Access-Control-Allow-Origin: *');
 // header('Content-Type: application/json');
