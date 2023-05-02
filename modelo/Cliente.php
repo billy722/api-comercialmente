@@ -13,7 +13,8 @@ class Cliente extends Conexion{
         // $resultado = $this->obtenerRegistros("select * from tb_clientes");
         // Respuestas::devolverRegistros($resultado);
 
-        echo "ahi van los clientes socio";
+        $respuesta = "ahi van los clientes socio";
+        Flight::json($respuesta);
     }
 
     public function obtenerCliente(){
