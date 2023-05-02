@@ -4,7 +4,8 @@ Flight::start();
 
 $Cliente = new Cliente();
 Flight::route('GET /clientes',array($Cliente,'obtenerClientes'));
-echo "hola";
+Flight::json("hola");
+
 // header('Access-Control-Allow-Origin: *');
 // header('Content-Type: application/json');
 // header('Access-Control-Allow-Credentials: true');
